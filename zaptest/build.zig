@@ -53,6 +53,11 @@ pub fn build(b: *std.Build) void {
         .root_module = lib_mod,
     });
 
+    const zap = b.dependency("zap", .{
+        .target = target,
+        .optimize = optimize,
+    });
+
     // This declares intent for the library to be installed into the standard
     // location when the user invokes the "install" step (the default step when
     // running `zig build`).
@@ -64,6 +69,8 @@ pub fn build(b: *std.Build) void {
         .name = "zaptest",
         .root_module = exe_mod,
     });
+
+    exe.root_module.addImport("zap", zap.module("zap"));
 
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default
